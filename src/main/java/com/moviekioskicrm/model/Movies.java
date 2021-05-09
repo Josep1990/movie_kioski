@@ -33,7 +33,7 @@ public class Movies {
 	}
 
 	public Movies(long id, String title, String release_date, String original_language, String poster_path) {
-		super();
+	
 		this.id                = id;
 		this.title             = title;
 		this.release_date      = release_date;
