@@ -20,14 +20,12 @@ public class MovieKioskiApplication {
 	
 	private static final Logger log = LoggerFactory.getLogger(MovieKioskiApplication.class);
 	
-//	@Bean
-//	public RestTemplate getRestTemplate() {
-//		return new RestTemplate();
-//	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MovieKioskiApplication.class, args);
+		
 	}
+	
 
 
 }

@@ -31,23 +31,25 @@ public class MovieController {
 	@Autowired
 	private MovieRepository movieRepository;
 	
-	@Autowired
+//	@Autowired
 	private static List<Movies> movieData = new ArrayList<Movies>();
 	
+	private static String movie_status = "available";	
 	
 	//get all movies
 	@GetMapping("/movies")
 	public List<Movies> getAllMovies(){
 		
 		return movieRepository.findAll();
+		
 	}
 	
 	@RequestMapping("/object")
-	@Bean
+	//@Bean
 	public List<Movies> httpConnection () {
 		
 		HttpClient client   = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://api.themoviedb.org/3/movie/popular?api_key=f83efc3c1b5e1e80a321f365d98b068b&language=en-US&page=1")).build();
+		HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://api.themoviedb.org/3/movie/popular?api_key=f83efc3c1b5e1e80a321f365d98b068b&language=en-US&page=4")).build();
 		return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
 				.thenApply(HttpResponse::body)
 				.thenApply(MovieController::parse) //double colon is method reference operator s used to call a method by referring to it with the help of its class directly. They behave exactly as the lambda expressions. The only difference it has from lambda expressions is that this uses direct reference to the method by name instead of providing a delegate to the method.
@@ -61,36 +63,37 @@ public class MovieController {
 	    JSONArray movie = movies.getJSONArray("results");
 	    int n = movie.length();
 	    
+	    
+	    
 	    for (int i = 0; i < n; ++i) {
-	    	 	JSONObject info = movie.getJSONObject(i);		   
-	    	 	int id                   = info.getInt("id");
-				String title             = info.getString("title"); 
-				String release_date      = info.getString("release_date");
-				String original_language = info.getString("original_language").toUpperCase();
-				String poster_path       = info.getString("poster_path");
-				
-				movieData.add(new Movies(id, title, release_date, original_language, "https://image.tmdb.org/t/p/w154" + poster_path));	
+    	 	JSONObject info = movie.getJSONObject(i);		   
+    	 	int id                   = info.getInt("id");
+			String title             = info.getString("title"); 
+			String release_date      = info.getString("release_date");
+			String original_language = info.getString("original_language").toUpperCase();
+			String poster_path       = info.getString("poster_path");	
+		
+			movieData.add(new Movies(id, title, release_date, original_language, "https://image.tmdb.org/t/p/w342" + poster_path, movie_status));	
 	    }			
 		return movieData;		
-	}	
+	}		
 	
-	
-	@Bean
-	public void addMovies() {
-		
-		List<Movies> movieData = httpConnection();
-		
-		for(Movies movie: movieData){			
-			movieRepository.save(movie);
-		}		
-	}
-	
-	
-	@PostMapping("/movies")
-	public Movies addMovie(@RequestBody Movies movies) {		
-				
-		return movieRepository.save(movies);
-	}
+//	@Bean
+//	public void addMovies() {
+//		
+//		List<Movies> movieData = httpConnection();
+//		
+//		for(Movies movie: movieData){			
+//			movieRepository.save(movie);
+//		}		
+//	}
+//	
+//	
+//	@PostMapping("/movies")
+//	public Movies addMovie(@RequestBody Movies movies) {		
+//				
+//		return movieRepository.save(movies);
+//	}
 
 
 	
