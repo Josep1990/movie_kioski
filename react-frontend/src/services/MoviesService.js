@@ -7,8 +7,12 @@ class MoviesService {
     getMovies(){
         return axios.get(MOVIE_API_BASE_URL);
     }
+
+    rentedMovie(rentedMovie){
+        return axios.post(MOVIE_API_BASE_URL, rentedMovie);
+    }
 }
-console.log("Movies Services"); 
-console.log(axios.get(MOVIE_API_BASE_URL)); 
+// console.log("Movies Services"); 
+// console.log(axios.get(MOVIE_API_BASE_URL)); 
 
 export default new MoviesService();

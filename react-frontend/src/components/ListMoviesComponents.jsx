@@ -5,6 +5,8 @@ import SwiperCore, { Navigation, Pagination, Controller, Thumbs } from 'swiper';
 import 'swiper/swiper-bundle.css';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import Badge from "react-bootstrap/Badge";
+
 
 SwiperCore.use([Navigation, Pagination, Controller, Thumbs]);
 
@@ -39,7 +41,7 @@ class ListMoviesComponents extends Component {
        
         return (
             <div>
-                <h2 className="text-center p-5">Available Movies</h2>
+                <h1 className="text-center p-5 "><Badge variant="dark">Available Movies</Badge></h1>
                 <div className = "Column">   
                     <Swiper                           
                         id="main"                                   

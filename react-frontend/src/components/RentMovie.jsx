@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import {Form, Row, Col} from "react-bootstrap";
-// import { Form } from 'react-bootstrap';
+
 
 
 
@@ -14,9 +14,18 @@ class RentMovie extends Component {
         super(props)
 
         this.state = {
-            movie: []
+            movie: [],
+            full_name: '',
+            credit_card: '',
+            emailId: '',
+            movie_id:''
+
+
         }
-        this.payMovie = this.payMovie.bind(this); //bind the method
+        this.getFullNameHandler   = this.getFullNameHandler.bind(this);
+        this.getCreditCardHandler = this.getCreditCardHandler.bind(this);
+        this.getEmailHandler      = this.getEmailHandler.bind(this);
+        this.saveClient           = this.saveClient.bind(this); //bind the method
         
     }
     
@@ -29,11 +38,34 @@ class RentMovie extends Component {
     data(){          
         return this.props.location.state.data;
     }
-    payMovie(){
-        return <h1>payment</h1>
+    saveClient = (e) =>{
+        e.preventDefault();
+        let rentedMovie = {full_name: this.state.full_name,
+                           credit_card: this.state.credit_card,
+                           emailId: this.state.emailId,
+                           movie_id: this.data()
+                        }
+        console.log('Rented Movie' + JSON.stringify(rentedMovie));
+        MoviesService.rentedMovie(rentedMovie).then(res =>{
+            this.props.history.push("/movies");
+        });
     }
 
+    getFullNameHandler =(event) =>{
+        this.setState({full_name: event.target.value});
+    }
 
+    getCreditCardHandler = (event) =>{
+        this.setState({credit_card: event.target.value});
+    }
+
+    getEmailHandler = (event) =>{
+        this.setState({emailId: event.target.value});
+    }
+
+    cancel(){
+        this.props.history.push("/movies" );
+    }
 
 
     render() {
@@ -45,7 +77,7 @@ class RentMovie extends Component {
                 <div className="row">
                     {this.state.movie.map(      
                         (movie, index) => {
-                            if(movie.id == rentedMovieId){                        
+                            if(movie.id === rentedMovieId){                        
                                 return  <Card key = {index} style={{ width: '18rem' }}>
                                             <Card.Img variant="top" src={movie.poster_path} />
                                             <Card.Body>
@@ -54,13 +86,12 @@ class RentMovie extends Component {
                                                 </Card.Title>    
                                                 <Card.Text>
                                                     Resealese date: {movie.release_date} <br/>
-                                                    Language: {movie.original_language}  <br/>
-                                                    {<h3> Price: €{rentingPrice}</h3>}                                           
-                                                </Card.Text>                                                                                                                       
+                                                    Language: {movie.original_language}  <br/>                                                                                          
+                                                </Card.Text>  
+                                                <h3> Price: €{rentingPrice}</h3>                                                                                                                     
                                             </Card.Body>
                                         </Card> 
-                            }
-                            
+                            }                            
                         } 
                     )}                 
    
@@ -92,7 +123,8 @@ class RentMovie extends Component {
                                         Name:
                                     </Form.Label>
                                     <Col sm="8">
-                                        <Form.Control type="text" placeholder="John Doe" />
+                                        <Form.Control type="text" placeholder="John Doe" name="full_name"
+                                        value={this.state.full_name} onChange={this.getFullNameHandler} />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} controlId="formPlaintextPassword">                                  
@@ -100,24 +132,29 @@ class RentMovie extends Component {
                                         Credit Card:
                                     </Form.Label>
                                     <Col sm="8">
-                                        <Form.Control type="text" placeholder="4555-6666-6688-1235" />
+                                        <Form.Control type="text" placeholder="4555-6666-6688-1235" name="credit_card"
+                                         value={this.state.credit_card} onChange={this.getCreditCardHandler} />                                       
                                     </Col>
                                 </Form.Group>
-                                <Modal.Footer>                            
-                                    <Button variant="danger" onClick={this.payMovie} >Confirm</Button>
-                                </Modal.Footer> 
                                 <Form.Group as={Row} controlId="formPlaintextPassword">
                                     <Form.Label column sm="4">
                                         Send Receipt by Email
                                     </Form.Label>
                                     <Col sm="8">
-                                        <Form.Control type="text" placeholder="email@example.com" />
+                                        <Form.Control type="text" placeholder="email@example.com" name="emailId"
+                                        value={this.state.emailId} onChange={this.getEmailHandler} />
                                     </Col>
                                 </Form.Group>
+                                <Modal.Footer>          
+                                    <Button variant="danger" onClick={this.cancel.bind(this)} >Cancel</Button>                  
+                                    <Button variant="success" onClick={this.saveClient} >Confirm</Button>                                  
+                                </Modal.Footer> 
+                                
+                               
                             </Form>
-                            <Modal.Footer>                            
-                            <Button variant="success" onClick={this.payMovie} > Send </Button>
-                            </Modal.Footer> 
+                                {/* <Modal.Footer>                            
+                                <Button variant="success" onClick={this.payMovie} > Send </Button>
+                                </Modal.Footer>  */}
                                                    
                         </Modal.Body>  
                                  
@@ -132,21 +169,3 @@ class RentMovie extends Component {
 export default RentMovie;
 
 
-// if(movie.id ==  x){
-//     <Card key = {index} style={{ width: '18rem' }}>
-//         <Card.Img variant="top" src={movie.poster_path} />
-//         <Card.Body>
-//             <Card.Title>
-//                 {movie.title}
-//             </Card.Title>    
-//             <Card.Text>
-//                 Resealese date: {movie.release_date} <br/>
-//                 Language: {movie.original_language}                                                
-//             </Card.Text>     
-//             {/* <Button variant="success" onClick={this.rentMovie}>Rent Now</Button>                                                                   */}
-//         </Card.Body>
-//     </Card> 
-// }else{
-
-//     <h1 key={index}>The    {x} did not work</h1>
-// }

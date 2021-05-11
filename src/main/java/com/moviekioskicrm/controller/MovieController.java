@@ -6,6 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.moviekioskicrm.model.Clients;
 import com.moviekioskicrm.model.Movies;
 import com.moviekioskicrm.repository.MovieRepository;
+import com.moviekioskicrm.repository.RentedMoviesRepository;
 
 
 
@@ -31,7 +35,9 @@ public class MovieController {
 	@Autowired
 	private MovieRepository movieRepository;
 	
-//	@Autowired
+	@Autowired
+	private RentedMoviesRepository rentedMoviesRepository;	
+
 	private static List<Movies> movieData = new ArrayList<Movies>();
 	
 	private static String movie_status = "available";	
@@ -43,13 +49,19 @@ public class MovieController {
 		return movieRepository.findAll();
 		
 	}
-	
+
+	@PostMapping("/movies")
+	public Clients rentMovies(@RequestBody Clients client) {		
+				
+		return rentedMoviesRepository.save(client);
+	}
+
+	@Bean
 	@RequestMapping("/object")
-	//@Bean
 	public List<Movies> httpConnection () {
 		
 		HttpClient client   = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://api.themoviedb.org/3/movie/popular?api_key=f83efc3c1b5e1e80a321f365d98b068b&language=en-US&page=4")).build();
+		HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://api.themoviedb.org/3/movie/popular?api_key=f83efc3c1b5e1e80a321f365d98b068b&language=en-US&page=5")).build();
 		return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
 				.thenApply(HttpResponse::body)
 				.thenApply(MovieController::parse) //double colon is method reference operator s used to call a method by referring to it with the help of its class directly. They behave exactly as the lambda expressions. The only difference it has from lambda expressions is that this uses direct reference to the method by name instead of providing a delegate to the method.
@@ -89,11 +101,6 @@ public class MovieController {
 //	}
 //	
 //	
-//	@PostMapping("/movies")
-//	public Movies addMovie(@RequestBody Movies movies) {		
-//				
-//		return movieRepository.save(movies);
-//	}
 
 
 	
