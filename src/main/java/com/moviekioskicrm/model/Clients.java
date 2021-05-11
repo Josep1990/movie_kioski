@@ -17,8 +17,8 @@ public class Clients {
 	@Column(name = "client_id")
 	private long client_id;		
 	
-	@Column(name = "movie_id")
-	private long movie_id;
+	@Column(name = "movieId")
+	private long movieId;
 
 	@Column(name = "full_name") //variable names and column names has to be exactly the same
 	private String full_name;
@@ -33,10 +33,10 @@ public class Clients {
 		
 	}
 
-	public Clients(long client_id, long movie_id, String full_name, String credit_card, String emailId) {	
+	public Clients(long client_id, long movieId, String full_name, String credit_card, String emailId) {	
 		
 		this.client_id   = client_id;
-		this.movie_id    = movie_id;
+		this.movieId    = movieId;
 		this.full_name   = full_name;
 		this.credit_card = credit_card;
 		this.emailId     = emailId;
@@ -52,11 +52,11 @@ public class Clients {
 	}
 	
 	public long getMovieId() {
-		return movie_id;
+		return movieId;
 	}
 	
-	public void setMovieId(long movie_id ) {
-		this.movie_id = movie_id;
+	public void setMovieId(long movieId ) {
+		this.movieId = movieId;
 	}
 
 	public String getFull_name() {

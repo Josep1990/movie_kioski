@@ -18,7 +18,7 @@ class RentMovie extends Component {
             full_name: '',
             credit_card: '',
             emailId: '',
-            movie_id:''
+            movieId:''
 
 
         }
@@ -43,7 +43,7 @@ class RentMovie extends Component {
         let rentedMovie = {full_name: this.state.full_name,
                            credit_card: this.state.credit_card,
                            emailId: this.state.emailId,
-                           movie_id: this.data()
+                           movieId: this.data()
                         }
         console.log('Rented Movie' + JSON.stringify(rentedMovie));
         MoviesService.rentedMovie(rentedMovie).then(res =>{
@@ -141,7 +141,7 @@ class RentMovie extends Component {
                                         Send Receipt by Email
                                     </Form.Label>
                                     <Col sm="8">
-                                        <Form.Control type="text" placeholder="email@example.com" name="emailId"
+                                        <Form.Control type="email" placeholder="email@example.com" name="emailId"
                                         value={this.state.emailId} onChange={this.getEmailHandler} />
                                     </Col>
                                 </Form.Group>
