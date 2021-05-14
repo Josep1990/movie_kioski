@@ -30,38 +30,27 @@ import com.moviekioskicrm.repository.RentedMoviesRepository;
 @RequestMapping("/movie-api/v1/")
 public class MovieController {	
 	
-	//private static String url = "https://api.themoviedb.org/3/movie/popular?api_key=f83efc3c1b5e1e80a321f365d98b068b&language=en-US&page=1";
-	
 	@Autowired
 	private MovieRepository movieRepository;
 	
-	@Autowired
-	private RentedMoviesRepository rentedMoviesRepository;	
-
 	private static List<Movies> movieData = new ArrayList<Movies>();
-	
-	private static String movie_status = "available";	
-	
-	//get all movies
+		
+	//get all movies from database and send to front end
 	@GetMapping("/movies")
 	public List<Movies> getAllMovies(){
 		
 		return movieRepository.findAll();
 		
-	}
+	}	
 
-	@PostMapping("/movies")
-	public Clients rentMovies(@RequestBody Clients client) {		
-				
-		return rentedMoviesRepository.save(client);
-	}
-
-	@Bean
-	@RequestMapping("/object")
+//	@Bean
+	@RequestMapping("/object") // add movies o the database
 	public List<Movies> httpConnection () {
 		
+		int pageNumber= 1; // there 500 page each page return 20 movies we are using 100 movies so we load 1-5 page 
+		
 		HttpClient client   = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://api.themoviedb.org/3/movie/popular?api_key=f83efc3c1b5e1e80a321f365d98b068b&language=en-US&page=5")).build();
+		HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://api.themoviedb.org/3/movie/popular?api_key=f83efc3c1b5e1e80a321f365d98b068b&language=en-US&page="+pageNumber)).build();
 		return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
 				.thenApply(HttpResponse::body)
 				.thenApply(MovieController::parse) //double colon is method reference operator s used to call a method by referring to it with the help of its class directly. They behave exactly as the lambda expressions. The only difference it has from lambda expressions is that this uses direct reference to the method by name instead of providing a delegate to the method.
@@ -85,7 +74,7 @@ public class MovieController {
 			String original_language = info.getString("original_language").toUpperCase();
 			String poster_path       = info.getString("poster_path");	
 		
-			movieData.add(new Movies(id, title, release_date, original_language, "https://image.tmdb.org/t/p/w342" + poster_path, movie_status));	
+			movieData.add(new Movies(id, title, release_date, original_language, "https://image.tmdb.org/t/p/w342" + poster_path));	
 	    }			
 		return movieData;		
 	}		

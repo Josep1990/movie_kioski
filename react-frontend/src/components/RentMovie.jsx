@@ -5,10 +5,6 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import {Form, Row, Col} from "react-bootstrap";
 
-
-
-
-
 class RentMovie extends Component {
     constructor(props){
         super(props)
@@ -18,7 +14,14 @@ class RentMovie extends Component {
             full_name: '',
             credit_card: '',
             emailId: '',
-            movieId:''
+            movies:{
+                id: '',
+                title: '',
+                release_date: '',
+                original_language: '',
+                poster_path: ''
+
+            }
 
 
         }
@@ -43,9 +46,15 @@ class RentMovie extends Component {
         let rentedMovie = {full_name: this.state.full_name,
                            credit_card: this.state.credit_card,
                            emailId: this.state.emailId,
-                           movieId: this.data()
+                           movies:{
+                            id: this.data().id,
+                            title: this.data().title,
+                            release_date: this.data().release_date,
+                            original_language: this.data().original_language,
+                            poster_path: this.data().poster_path
+                           } 
                         }
-        console.log('Rented Movie' + JSON.stringify(rentedMovie));
+        // console.log('Rented Movie' + JSON.stringify(rentedMovie));
         MoviesService.rentedMovie(rentedMovie).then(res =>{
             this.props.history.push("/movies");
         });
@@ -69,15 +78,19 @@ class RentMovie extends Component {
 
 
     render() {
-        let rentedMovieId = this.data();
+        let rentedMovieId = this.data().id;
+       
         let rentingPrice = 2.99;
         return (
 
             <div className="container row m-5">    
                 <div className="row">
-                    {this.state.movie.map(      
+                  
+                  {this.state.movie.map(      
                         (movie, index) => {
-                            if(movie.id === rentedMovieId){                        
+                          
+                            if(movie.id === rentedMovieId){ 
+                                                   
                                 return  <Card key = {index} style={{ width: '18rem' }}>
                                             <Card.Img variant="top" src={movie.poster_path} />
                                             <Card.Body>
@@ -91,14 +104,15 @@ class RentMovie extends Component {
                                                 <h3> Price: €{rentingPrice}</h3>                                                                                                                     
                                             </Card.Body>
                                         </Card> 
-                            }                            
+                            };    
+                            return null;                   
                         } 
                     )}                 
    
                 </div>  
                 <div className="col">  
                     <Modal.Dialog>
-                        <Modal.Header closeButton>
+                        <Modal.Header >
                             <Modal.Title>Renting Info</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
@@ -113,7 +127,7 @@ class RentMovie extends Component {
 
                     </Modal.Dialog>  
                     <Modal.Dialog>
-                        <Modal.Header closeButton>
+                        <Modal.Header>
                             <Modal.Title>Checkout:</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
@@ -148,13 +162,9 @@ class RentMovie extends Component {
                                 <Modal.Footer>          
                                     <Button variant="danger" onClick={this.cancel.bind(this)} >Cancel</Button>                  
                                     <Button variant="success" onClick={this.saveClient} >Confirm</Button>                                  
-                                </Modal.Footer> 
-                                
+                                </Modal.Footer>                                
                                
-                            </Form>
-                                {/* <Modal.Footer>                            
-                                <Button variant="success" onClick={this.payMovie} > Send </Button>
-                                </Modal.Footer>  */}
+                            </Form>                            
                                                    
                         </Modal.Body>  
                                  

@@ -26,21 +26,21 @@ public class Movies {
 	@Column(name = "poster_path")
 	private String poster_path;
 	
-	@Column(name = "movie_status")
-	private String movie_status;
+//	@Column(name = "movie_status")
+//	private String movie_status;
 	
 	public Movies() {
 		
 	}
 
-	public Movies(long id, String title, String release_date, String original_language, String poster_path, String movie_status) {
+	public Movies(long id, String title, String release_date, String original_language, String poster_path) {
 	
 		this.id                = id;
 		this.title             = title;
 		this.release_date      = release_date;
 		this.original_language = original_language;
 		this.poster_path       = poster_path;
-		this.movie_status      = movie_status;
+//		this.movie_status      = movie_status;
 	}
 
 	public long getId() {
@@ -83,13 +83,13 @@ public class Movies {
 		this.poster_path = poster_path;
 	}
 
-	public String getMovie_status() {
-		return movie_status;
-	}
-
-	public void setMovie_status(String movie_status) {
-		this.movie_status = movie_status;
-	}
+//	public String getMovie_status() {
+//		return movie_status;
+//	}
+//
+//	public void setMovie_status(String movie_status) {
+//		this.movie_status = movie_status;
+//	}
 	
 	
 	

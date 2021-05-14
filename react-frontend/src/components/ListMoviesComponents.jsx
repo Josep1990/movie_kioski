@@ -27,9 +27,17 @@ class ListMoviesComponents extends Component {
         });
     }
 
-    rentMovie(id){
-        this.props.history.push({pathname: `/rent-movie/${id}`, state: { data: id }}); //whenever the method is called redirect to this url
- 
+    rentMovie(id, title, release_date, original_language, poster_path){
+        this.props.history.push({pathname: `/rent-movie/${id}`,
+        state: { data: {
+                id,
+                title,
+                release_date,
+                original_language,
+                poster_path
+                }}}); //save this information on state.data
+
+              
     }
 
     returnMovie(){
@@ -69,7 +77,15 @@ class ListMoviesComponents extends Component {
                                                 Resealese date: {movies.release_date} <br/>
                                                 Language: {movies.original_language}                                                
                                             </Card.Text>     
-                                             <Button variant="success" onClick={() => this.rentMovie(movies.id)}>Rent Now</Button>                                                                  
+                                            <Button variant="success" onClick={
+                                                 () => this.rentMovie(movies.id, 
+                                                                      movies.title, 
+                                                                      movies.release_date, 
+                                                                      movies.original_language, 
+                                                                      movies.poster_path
+                                                                    )}>
+                                                                    Rent Now
+                                            </Button>                                                                  
                                         </Card.Body>
                                     </Card>     
                                 </SwiperSlide>                                                                                                      
