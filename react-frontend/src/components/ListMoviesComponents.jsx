@@ -49,7 +49,7 @@ class ListMoviesComponents extends Component {
        
         return (
             <div>
-                <h1 className="text-center p-5 "><Badge variant="dark">Available Movies</Badge></h1>
+                <h1 className="text-center p-5 "><Badge variant="danger">Available Movies</Badge></h1>
                 <div className = "Column">   
                     <Swiper                           
                         id="main"                                   

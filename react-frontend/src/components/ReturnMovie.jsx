@@ -3,7 +3,7 @@ import MoviesService from '../services/MoviesService';
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
-import {Form, Row, Col, Alert} from "react-bootstrap";
+import {Form, Row, Col} from "react-bootstrap";
 
 class ReturnMovie extends Component {
     constructor(props){
@@ -35,14 +35,11 @@ class ReturnMovie extends Component {
      
         
     }
-    getClientIdHandler = (event) =>{
-        
+    getClientIdHandler = (event) =>{        
         event.preventDefault();
         if(event.target.value !== null){
             this.setState({client_id: event.target.value});
-
-        }
-      
+        }      
     }
 
     componentDidUpdate(prevProps, prevStates){
@@ -56,18 +53,13 @@ class ReturnMovie extends Component {
                     })
                 }
             })
-            .catch(error => this.setState({error, isLoading : false}));
-              
+            .catch(error => this.setState({error, isLoading : false}));              
         }        
     }   
 
     returnedMovie = (e) => {
 
-        const {client_movie, client_id}  = this.state;
-       
-       
-        
-       
+        const {client_movie, client_id}  = this.state;      
         e.preventDefault(); 
         let returnedMovie = {
             full_name: client_movie.full_name,

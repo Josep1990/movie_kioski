@@ -3,7 +3,11 @@ import MoviesService from '../services/MoviesService';
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import {Form, Row, Col} from "react-bootstrap";
+import {Form, Row, Col, Alert} from "react-bootstrap";
+
+
+
+
 
 class RentMovie extends Component {
     constructor(props){
@@ -21,10 +25,10 @@ class RentMovie extends Component {
                 original_language: '',
                 poster_path: ''
 
-            }
-
-
+            }, 
+            errors: {}                 
         }
+       
         this.getFullNameHandler   = this.getFullNameHandler.bind(this);
         this.getCreditCardHandler = this.getCreditCardHandler.bind(this);
         this.getEmailHandler      = this.getEmailHandler.bind(this);
@@ -41,26 +45,60 @@ class RentMovie extends Component {
     data(){          
         return this.props.location.state.data;
     }
-    saveClient = (e) =>{
-        e.preventDefault();
-        let rentedMovie = {full_name: this.state.full_name,
-                           credit_card: this.state.credit_card,
-                           emailId: this.state.emailId,
-                           movies:{
-                            id: this.data().id,
-                            title: this.data().title,
-                            release_date: this.data().release_date,
-                            original_language: this.data().original_language,
-                            poster_path: this.data().poster_path
-                           } 
-                        }
-        // console.log('Rented Movie' + JSON.stringify(rentedMovie));
-        MoviesService.rentedMovie(rentedMovie).then(res =>{
-            this.props.history.push("/movies");
-        });
+
+    formValidation = () => {
+        const {full_name, credit_card, emailId} = this.state;
+        let isValid = true;
+        let regexBNumbers = "^[0-9]+";
+        const errors = {};
+        
+        if(full_name.trim().length < 6){
+            errors.full_name = "Plase, provide your full name";
+            isValid = false;
+        }
+        if(credit_card.trim().length < 16 || credit_card.trim().length > 16  ){
+            errors.credit_card = "Plase, provide 16 number of you Credit Card";
+            isValid = false;
+        }
+        if(!credit_card.match(regexBNumbers) ){
+            errors.usernameLength = "Plase, provide only numbers of you Credit Card";
+            isValid = false;
+        }
+        if(!emailId.includes("@") || emailId.length <= 6){
+            errors.emailId = "Plase, provide a valid email address";
+            isValid = false;
+        }
+        this.setState({errors});
+        return isValid;
+   
     }
 
-    getFullNameHandler =(event) =>{
+    saveClient = (e) =>{ // send the movie info to the database toghether with the client info 
+        e.preventDefault();
+        const isValid = this.formValidation();
+        if(isValid){
+            let rentedMovie = {full_name: this.state.full_name,
+                            credit_card: this.state.credit_card,
+                            emailId: this.state.emailId,
+                            movies:{
+                                id: this.data().id,
+                                title: this.data().title,
+                                release_date: this.data().release_date,
+                                original_language: this.data().original_language,
+                                poster_path: this.data().poster_path
+                            } 
+                            }        
+            
+                MoviesService.rentedMovie(rentedMovie).then(res =>{
+                    setTimeout(() => {
+                        this.props.history.push("/movies");
+                      }, 1500);                    
+                    
+                });    
+        }   
+    }
+
+    getFullNameHandler =(event) =>{        
         this.setState({full_name: event.target.value});
     }
 
@@ -76,11 +114,12 @@ class RentMovie extends Component {
         this.props.history.push("/movies" );
     }
 
-
+    
     render() {
-        let rentedMovieId = this.data().id;
-       
+        let rentedMovieId = this.data().id;       
         let rentingPrice = 2.99;
+        const {full_name, credit_card, emailId, errors } = this.state;
+        
         return (
 
             <div className="container row m-5">    
@@ -124,15 +163,14 @@ class RentMovie extends Component {
                             </ul>  
                         
                         </Modal.Body>
-
                     </Modal.Dialog>  
                     <Modal.Dialog>
                         <Modal.Header>
                             <Modal.Title>Checkout:</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Form>
-                                <Form.Group as={Row} controlId="formPlaintextPassword"> 
+                            <Form >
+                                <Form.Group as={Row} controlId="formPlaintext"> 
                                     <Form.Label column sm="4">
                                         Name:
                                     </Form.Label>
@@ -150,7 +188,7 @@ class RentMovie extends Component {
                                          value={this.state.credit_card} onChange={this.getCreditCardHandler} />                                       
                                     </Col>
                                 </Form.Group>
-                                <Form.Group as={Row} controlId="formPlaintextPassword">
+                                <Form.Group as={Row} controlId="formPlaintextEmail">
                                     <Form.Label column sm="4">
                                         Send Receipt by Email
                                     </Form.Label>
@@ -163,7 +201,9 @@ class RentMovie extends Component {
                                     <Button variant="danger" onClick={this.cancel.bind(this)} >Cancel</Button>                  
                                     <Button variant="success" onClick={this.saveClient} >Confirm</Button>                                  
                                 </Modal.Footer>                                
-                               
+                                {Object.keys(this.state.errors).map((key) => {
+                                    return <Alert key={key} variant="danger">{errors[key]}</Alert>
+                                })}
                             </Form>                            
                                                    
                         </Modal.Body>  
