@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailConfiguration {	
 	
-	@Value("${spring.mail.username}")
+	@Value("${spring.mail.username}") //get the value from the application properties in the username, password, host and the port numer
 	private String email;
 	
 	@Value("${spring.mail.password}")
@@ -18,7 +18,7 @@ public class EmailConfiguration {
 	@Value("${spring.mail.port}")
 	private int port;
 	
-	
+	//getters and setters
 	public String getEmail() {
 		return email;
 	}

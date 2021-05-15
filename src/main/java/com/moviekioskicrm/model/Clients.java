@@ -12,17 +12,17 @@ import javax.validation.constraints.NotNull;
 
 
 
-@Entity
-@Table(name = "rented_movies")
+@Entity //specifies that this class is a entity in the database in the
+@Table(name = "rented_movies") //cretes the table called rented_movies
 public class Clients {
 
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)	
-	@Column(name = "client_id")
+	@Id //this annotation set this fild as id and it generates automatically it is autoincrement
+	@GeneratedValue(strategy = GenerationType.AUTO)	 
+	@Column(name = "client_id") //colum names
 	private long client_id;		
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER) //defines the relationship with the movie model in the database the movie id is bind to the movie table so we can retrieve the movie info from the client table
 	private Movies movies;
 
 	@NotNull
@@ -41,10 +41,11 @@ public class Clients {
 	@Column(name = "returned")
 	private boolean returned;
 	
+	//default constructor is needed for the JPA Java persistence API
 	public Clients() {
 		
 	}
-
+	//getters and setters
 	public long getClientId() {
 		return client_id;
 	}

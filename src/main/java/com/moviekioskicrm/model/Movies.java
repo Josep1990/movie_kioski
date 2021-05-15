@@ -5,13 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "movies")
+@Entity //defines this class as a entiry in the database
+@Table(name = "movies") //table called movies
 public class Movies {
 	
 	
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
+	
+	@Id //set this filed as id but we are using the id movies that come from the api so we dont need to specify auto increment
 	private long id;
 	
 	@Column(name = "title")
@@ -26,13 +26,11 @@ public class Movies {
 	@Column(name = "poster_path")
 	private String poster_path;
 	
-//	@Column(name = "movie_status")
-//	private String movie_status;
-	
+	//default constructor need for the JPA
 	public Movies() {
 		
 	}
-
+	//movie constructor
 	public Movies(long id, String title, String release_date, String original_language, String poster_path) {
 	
 		this.id                = id;
@@ -40,9 +38,9 @@ public class Movies {
 		this.release_date      = release_date;
 		this.original_language = original_language;
 		this.poster_path       = poster_path;
-//		this.movie_status      = movie_status;
-	}
 
+	}
+	//getters and setters
 	public long getId() {
 		return id;
 	}
