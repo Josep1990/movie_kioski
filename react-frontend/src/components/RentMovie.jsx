@@ -89,11 +89,8 @@ class RentMovie extends Component {
                             } 
                             }        
             
-                MoviesService.rentedMovie(rentedMovie).then(res =>{
-                    setTimeout(() => {
-                        this.props.history.push("/movies");
-                      }, 1500);                    
-                    
+                MoviesService.rentedMovie(rentedMovie).then(res =>{                   
+                        this.props.history.push("/movies");                 
                 });    
         }   
     }

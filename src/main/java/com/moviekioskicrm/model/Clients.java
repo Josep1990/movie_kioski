@@ -7,27 +7,34 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 
 
 @Entity
 @Table(name = "rented_movies")
 public class Clients {
+
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy = GenerationType.AUTO)	
 	@Column(name = "client_id")
 	private long client_id;		
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Movies movies;
 
+	@NotNull
 	@Column(name = "full_name") //variable names and column names has to be exactly the same
 	private String full_name;
 	
+	@NotNull
 	@Column(name = "credit_card")
 	private String credit_card;
 	
+	@NotNull
+	@Email
 	@Column(name = "emailId")
 	private String emailId;
 	
@@ -37,16 +44,6 @@ public class Clients {
 	public Clients() {
 		
 	}
-
-//	public Clients(long client_id, long movieId, String full_name, String credit_card, String emailId) {	
-//		
-//		this.client_id   = client_id;
-//		this.movieId    = movieId;
-//		this.full_name   = full_name;
-//		this.credit_card = credit_card;
-//		this.emailId     = emailId;
-//		
-//	}
 
 	public long getClientId() {
 		return client_id;

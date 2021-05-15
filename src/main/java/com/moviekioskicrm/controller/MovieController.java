@@ -10,18 +10,13 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moviekioskicrm.model.Clients;
 import com.moviekioskicrm.model.Movies;
 import com.moviekioskicrm.repository.MovieRepository;
-import com.moviekioskicrm.repository.RentedMoviesRepository;
 
 
 
@@ -62,8 +57,7 @@ public class MovieController {
 		
 		JSONObject movies = new JSONObject(responseBody);		
 	    JSONArray movie = movies.getJSONArray("results");
-	    int n = movie.length();
-	    
+	    int n = movie.length();	    
 	    
 	    
 	    for (int i = 0; i < n; ++i) {
@@ -88,8 +82,7 @@ public class MovieController {
 //			movieRepository.save(movie);
 //		}		
 //	}
-//	
-//	
+
 
 
 	
