@@ -7,24 +7,22 @@ const MOVIE_API_CONFIRM_RETURNED_MOVIE = "http://localhost:8080/movie-api/v1/ret
 
 class MoviesService {
 
-    getMovies(){
-        return axios.get(MOVIE_API_BASE_URL);
+    getMovies(){ //this method get all the movies from the Spring Boot Api and return an json object with all the movies in the database
+        return axios.get(MOVIE_API_BASE_URL); 
     }
 
-    rentedMovie(rentedMovie){
+    rentedMovie(rentedMovie){ //this method send the client information toghether with the rented movie to the backend application and then the backend save it in the database
         return axios.post(MOVIE_API_CLIENT_REQUEST_URL, rentedMovie);
     }
 
-    getClientMovies(client_id){
+    getClientMovies(client_id){ //this method get the client by id and the movie that has been rented 
         return axios.get(MOVIE_API_CLIENT_RETURN_MOVIE_URL + client_id);
     }
 
-    confirmReturnedMovie(client_movie){
+    confirmReturnedMovie(client_movie){ //this method confirm when the client return a movie and update the database
         return axios.post(MOVIE_API_CONFIRM_RETURNED_MOVIE, client_movie);
     }
     
 }
-// console.log("Movies Services"); 
-// console.log(axios.get(MOVIE_API_BASE_URL)); 
 
 export default new MoviesService();
