@@ -99,10 +99,10 @@ public class ClientController {
     }
     
     private SimpleMailMessage simpleMailMessage(Clients client, int returnOrRent){ //this method configure the the email like who will be receiving and the body of the email
-    	
+    	String mailFrom = "noreplyxtravision@gmail.com";
     	//create email istance
     	SimpleMailMessage mailMessage = new SimpleMailMessage(); //used to create a simple mail message including the from, to, cc, subject and text fields
-    	mailMessage.setFrom(emailConfig.getEmail());
+    	mailMessage.setFrom(mailFrom);
     	mailMessage.setTo(client.getEmailId());
     	mailMessage.setSubject("The Movie is : " + client.getMovies().getTitle());
     	mailMessage.setText(emailBody(client, returnOrRent));
@@ -112,7 +112,7 @@ public class ClientController {
     
     private String emailBody(Clients client, int rentOrReturn) {   	
     	
-    	if(rentOrReturn == rentMovie) { //set tthe right message to send to the client
+    	if(rentOrReturn == rentMovie) { //set the right message to send to the client
     		
 		emailBody = "Hello " + client.getFull_name() + " your CLIENT Id is: " + client.getClientId() + "\n" 
 							+ " You rented the movie: " + client.getMovies().getTitle() 
